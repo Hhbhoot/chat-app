@@ -1,4 +1,5 @@
 import { asyncHandler } from "../Helpers/asyncHandler.js";
+import generateTokenAndSetCookies from "../Helpers/generateToken.js";
 import User from "../Model/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -29,7 +30,12 @@ export const createUser = asyncHandler(async (req, res, next) => {
     profileImage: filepath,
   });
 
-  await user.save();
+  if (user) {
+    generateTokenAndSetCookies(user._id, res);
+    await user.save();
+  } else {
+    return res.status(400).json({ message: "Failed to create user" });
+  }
 
   res.status(201).json({
     status: "success",
@@ -53,17 +59,23 @@ export const loginUser = asyncHandler(async (req, res, next) => {
   if (!isMatch) {
     return res.status(401).json({ message: "Invalid password" });
   }
-  const userId = {
-    _id: user._id,
-  };
-  const token = jwt.sign(userId, process.env.JWT_SECRET, { expiresIn: "7d" });
+
+  generateTokenAndSetCookies(user._id, res);
 
   return res.json({
     status: "success",
     message: "Logged in successfully",
     data: {
-      token,
       user,
     },
   });
 });
+
+export const logout = async (req, res, next) => {
+  try {
+    res.cookie("token", "", { maxAge: 0 });
+    res.json({ status: "success", message: "Logged out successfully" });
+  } catch {
+    res.status(500).json({ status: "error", message: "Failed to log out" });
+  }
+};
