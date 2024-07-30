@@ -11,17 +11,20 @@ const __dirname = dirname(__filename);
 const filepath = path.join(__dirname, "public");
 
 const app = express();
-app.use(express.json());
 
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(cookieParser());
-import userRouter from "./Routes/userRoutes.js";
-import messageRouter from "./Routes/messageRoutes.js";
-
 app.use(cors());
+
+import authRouter from "./Routes/authRoutes.js";
+import messageRouter from "./Routes/messageRoutes.js";
+import userRouter from "./Routes/userRoutes.js";
+
 app.use("/public", express.static(filepath));
-app.use("/api/v1/users", userRouter);
+app.use("/api/v1/users", authRouter);
 app.use("/api/v1/messages", messageRouter);
+app.use("/api/v1/users", userRouter);
 
 export default app;

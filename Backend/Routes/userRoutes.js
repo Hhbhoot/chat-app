@@ -1,11 +1,9 @@
 import express from "express";
-import { createUser, loginUser, logout } from "../Controller/userController.js";
-import upload from "../Helpers/ProfileUpload.js";
+import { protectRoute } from "../middleware/authMiddleware.js";
+import { getUserforSidebar } from "../Controller/userController.js";
 
 const router = express.Router();
 
-router.route("/signup").post(upload.single("profileImage"), createUser);
-router.route("/login").post(loginUser);
-router.route("/logout").post(logout);
+router.route("/").get(protectRoute, getUserforSidebar);
 
 export default router;

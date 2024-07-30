@@ -37,3 +37,20 @@ export const sendMesaage = asyncHandler(async (req, res, next) => {
     },
   });
 });
+
+export const getMessages = asyncHandler(async (req, res, next) => {
+  const senderId = req?.user;
+  const receiverId = req?.params.id;
+
+  let conversation = await Conversation.findOne({
+    participants: { $all: [senderId, receiverId] },
+  }).populate("messages");
+
+  if (!conversation) {
+    return res.status(200).json([]);
+  }
+  res.status(200).json({
+    status: "success",
+    data: conversation.messages,
+  });
+});
