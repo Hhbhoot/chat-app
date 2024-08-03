@@ -23,7 +23,7 @@ import messageRouter from "./Routes/messageRoutes.js";
 import userRouter from "./Routes/userRoutes.js";
 
 app.use("/public", express.static(filepath));
-app.use("/api/v1/users", authRouter);
+app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/messages", messageRouter);
 app.use("/api/v1/users", userRouter);
 
