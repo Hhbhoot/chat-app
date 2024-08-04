@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import "./Login.css";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-
 import toast, { Toaster } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthContex } from "../../Contex/AuthContex";
 
 const Login = () => {
+  const { setAuth } = useAuthContex();
+
   const [userName, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -31,9 +35,13 @@ const Login = () => {
       toast.error(data?.message);
       return;
     }
+    setAuth(true);
+    localStorage.setItem("chatapptcn", data?.data?.token);
 
-    toast.success("Logged in successfully.");
-    localStorage.setItem("token", data.data.token);
+    toast.success("User Logged in successfully.");
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
   };
 
   return (
@@ -46,9 +54,9 @@ const Login = () => {
           <label className="text-sm font-medium text-white">UserName</label>
           <input
             type="text"
+            autoComplete="username"
             className="w-full px-4 py-2 text-sm text-white bg-white/10 border border-gray-300 rounded-md  focus:outline-none"
             placeholder="Enter UserName Here"
-            value={userName}
             onChange={(e) => setUserName(e.target.value)}
           />
           <label className="text-sm font-medium text-white mt-2">
@@ -56,12 +64,12 @@ const Login = () => {
           </label>
           <div className="relative">
             <input
+              autoComplete="new-password"
               type={showPassword ? "text" : "password"}
               placeholder="Enter Password Here"
               className="w-full px-4 py-2 text-sm text-white bg-white/10 border border-gray-300 rounded-md
             focus:outline-none
             "
-              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             <span

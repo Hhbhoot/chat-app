@@ -29,8 +29,9 @@ export const createUser = asyncHandler(async (req, res, next) => {
     profileImage: filepath,
   });
 
+   let token ;
   if (user) {
-    generateTokenAndSetCookies(user._id, res);
+     token = generateTokenAndSetCookies(user._id, res);
     await user.save();
   } else {
     return res.status(400).json({ message: "Failed to create user" });
@@ -41,6 +42,7 @@ export const createUser = asyncHandler(async (req, res, next) => {
     message: "User created successfully",
     data: {
       user,
+      token,
     },
   });
 });
@@ -59,14 +61,16 @@ export const loginUser = asyncHandler(async (req, res, next) => {
     return res.status(401).json({ message: "Invalid password" });
   }
 
-  generateTokenAndSetCookies(user._id, res);
+   let token =  generateTokenAndSetCookies(user._id, res);
 
   return res.json({
     status: "success",
     message: "Logged in successfully",
     data: {
       user,
+      token
     },
+   
   });
 });
 
@@ -78,3 +82,17 @@ export const logout = async (req, res, next) => {
     res.status(500).json({ status: "error", message: "Failed to log out" });
   }
 };
+
+export const validate = asyncHandler(async(req,res) =>{
+   
+   const user = req?.user
+
+    return res.status(200).json({
+      status: "success",
+      message: "User is authenticated",
+      data  : {
+        user
+      }
+    })
+   
+})

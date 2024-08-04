@@ -5,4 +5,5 @@
 * {
   box-sizing: border-box;
   font-family: "poppins";
+  scroll-behavior: smooth;
 }

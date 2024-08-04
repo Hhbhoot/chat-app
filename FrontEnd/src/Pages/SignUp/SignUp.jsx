@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import "./SignUp.css";
 import toast, { Toaster } from "react-hot-toast";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-
 import { FaChevronDown } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthContex } from "../../Contex/AuthContex";
 
 const SignUp = () => {
+  const { setAuth } = useAuthContex();
+
   const [details, setDetails] = useState({
     name: "",
     userName: "",
@@ -74,6 +76,10 @@ const SignUp = () => {
         return;
       }
       toast.success("User signed up successfully");
+      localStorage.setItem("chatapptcn", data?.data?.token);
+      setTimeout(() => {
+        setAuth(true);
+      }, 1000);
     } catch (err) {
       toast.error("Failed to sign up user");
       console.error(err);
@@ -81,7 +87,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="w-full min-h-screen py-5 background flex items-center justify-center ">
+    <div className="w-full min-h-screen py-5 background flex items-center justify-center  ">
       <div className="flex items-center justify-center h-auto z-50  w-[80%] sm:w-[70%] md:w-[50%] lg:w-[40%] xl:w-[40%] rounded-2xl backdrop-blur-md bg-white/10 border border-white/10 shadow-lg">
         <form
           className="flex flex-col gap-4 w-full p-5 ]"
@@ -124,6 +130,7 @@ const SignUp = () => {
               <div className="relative">
                 <input
                   name="password"
+                  autoComplete="new-password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter Password "
                   className="w-full px-4 py-2 text-sm text-white bg-white/10 border border-gray-300 rounded-md  focus:outline-none"
@@ -153,6 +160,7 @@ const SignUp = () => {
                 <input
                   type={showConfirmPassword ? "text" : "password"}
                   name="confirmPassword"
+                  autoComplete="new-password"
                   placeholder="Enter Confirm Password "
                   className="w-full px-4 py-2 text-sm text-white bg-white/10 border border-gray-300 rounded-md
         focus:outline-none
