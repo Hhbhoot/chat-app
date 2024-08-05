@@ -3,15 +3,16 @@ import { Message } from "../Message/Message";
 import useConversation from "../../Zustand/userConversation";
 
 export const Messages = () => {
-  const [messages, setMessages] = useState([]);
-  const { selectedConversation } = useConversation();
+  const { selectedConversation, messages, addMessage } = useConversation();
 
-  // const { _id } = selectedConversation;
-  const _id = "66a50b78cf3c61a0a3742659";
   const fetchMessage = async () => {
+    if (!selectedConversation?._id) {
+      return;
+    }
+
     try {
       const res = await fetch(
-        `http://localhost:8080/api/v1/messages/get/${_id}`,
+        `http://localhost:8080/api/v1/messages/get/${selectedConversation._id}`,
         {
           method: "GET",
           headers: {
@@ -21,13 +22,18 @@ export const Messages = () => {
         }
       );
       const data = await res.json();
-      console.log(messages);
 
       if (data?.status !== "success") {
         console.error(data?.message);
         return;
       }
-      setMessages(data?.data);
+
+      // Ensure data is an array before adding it
+      if (Array.isArray(data?.data)) {
+        addMessage(data?.data);
+      } else {
+        console.error("Fetched data is not an array", data?.data);
+      }
     } catch (error) {
       console.error("Error fetching messages", error);
     }
@@ -36,10 +42,17 @@ export const Messages = () => {
   useEffect(() => {
     fetchMessage();
     // eslint-disable-next-line
-  }, []);
+  }, [selectedConversation._id]);
+
+  if (!Array.isArray(messages)) {
+    console.error("Messages state is not an array", messages);
+    return null; // or some fallback UI
+  }
+
+  useEffect(() => {}, [messages, addMessage]);
 
   return (
-    <div className="flex items-start">
+    <div className="flex flex-col overflow-auto">
       {messages.map((message, index) => (
         <Message key={index} message={message} />
       ))}

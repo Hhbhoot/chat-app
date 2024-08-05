@@ -3,7 +3,7 @@ import useConversation from "../../Zustand/userConversation";
 
 const Conversations = ({ user, lastIdx }) => {
   const { _id, name } = user;
-  console.log(user);
+  // console.log(user);
 
   const { selectedConversation, setSelectedConversation } = useConversation();
   const isSelected = selectedConversation?._id === user?._id;

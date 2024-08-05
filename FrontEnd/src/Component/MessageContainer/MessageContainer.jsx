@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Header } from "../Header/Header";
 import { SendMessage } from "../SendMessage/SendMessage";
 import { Messages } from "../Messages/Messages";
@@ -6,7 +6,14 @@ import { PiChatsCircle } from "react-icons/pi";
 import useConversation from "../../Zustand/userConversation";
 
 export const MessageContainer = () => {
-  const { selectedConversation } = useConversation();
+  const { selectedConversation, setSelectedConversation } = useConversation();
+
+  useEffect(() => {
+    return () => {
+      // cleanup function here
+      setSelectedConversation(null);
+    };
+  }, [setSelectedConversation._id]);
 
   return (
     <div className="md:min-w-[450px] px-4 border-l self-stretch flex items-center ">

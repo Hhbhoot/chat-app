@@ -13,7 +13,7 @@ function App() {
   useEffect(() => {
     if (localStorage?.getItem("chatapptcn")) {
       let token = localStorage.getItem("chatapptcn");
-      console.log(token);
+      // console.log(token);
 
       const validateToken = async () => {
         try {
