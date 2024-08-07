@@ -20,7 +20,6 @@ const Conversation = () => {
       const data = await res.json();
 
       if (data?.status !== "success") {
-        console.log(data?.message);
         return; // If status is not success, return without showing the conversations.
       }
       setConversation(data?.data?.users);

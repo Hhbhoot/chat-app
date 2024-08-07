@@ -9,7 +9,9 @@ import { Home, Login, SignUp } from "./Pages";
 import { useAuthContex } from "./Contex/AuthContex";
 
 function App() {
-  const { isAuth, setAuth } = useAuthContex();
+  const { isAuth, setAuth, authenticatedUSer, setAuthenticateUser } =
+    useAuthContex();
+
   useEffect(() => {
     if (localStorage?.getItem("chatapptcn")) {
       let token = localStorage.getItem("chatapptcn");
@@ -34,6 +36,7 @@ function App() {
             throw new Error(data.message);
           }
           setAuth(true);
+          setAuthenticateUser(data?.data?.user);
         } catch (err) {
           localStorage.removeItem("chatapptcn");
           setAuth(false);

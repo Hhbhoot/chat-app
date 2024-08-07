@@ -8,9 +8,11 @@ export const useAuthContex = () => {
 
 export const AuthContexProvider = ({ children }) => {
   const [isAuth, setAuth] = useState(false);
-
+  const [authenticatedUSer, setAuthenticateUser] = useState(null);
   return (
-    <AuthContex.Provider value={{ isAuth, setAuth }}>
+    <AuthContex.Provider
+      value={{ isAuth, setAuth, authenticatedUSer, setAuthenticateUser }}
+    >
       {children}
     </AuthContex.Provider>
   );

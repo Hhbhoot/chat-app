@@ -38,14 +38,14 @@ export const SendMessage = () => {
       }
 
       addMessage([...messages, data?.data]);
-      setText(""); // Reset input field after sending message
+
+      // Reset input field after sending message
     } catch (err) {
       console.error(err);
       toast.error("Failed to send message");
     }
+    setText("");
   };
-
-  useEffect(() => {}, [addMessage, messages]);
 
   return (
     <div>
@@ -65,7 +65,6 @@ export const SendMessage = () => {
           />
         </div>
       </form>
-      <Toaster />
     </div>
   );
 };

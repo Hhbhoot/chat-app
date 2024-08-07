@@ -9,11 +9,9 @@ export const MessageContainer = () => {
   const { selectedConversation, setSelectedConversation } = useConversation();
 
   useEffect(() => {
-    return () => {
-      // cleanup function here
-      setSelectedConversation(null);
-    };
-  }, [setSelectedConversation._id]);
+    // cleanup function (unmounts)
+    return () => setSelectedConversation(null);
+  }, [setSelectedConversation]);
 
   return (
     <div className="md:min-w-[450px] px-4 border-l self-stretch flex items-center ">

@@ -36,7 +36,7 @@ const Login = () => {
       return;
     }
     setAuth(true);
-    localStorage.setItem("chatapptcn", data?.data?.token);
+    localStorage.setItem("chatapptcn", data?.data.token);
 
     toast.success("User Logged in successfully.");
     setTimeout(() => {

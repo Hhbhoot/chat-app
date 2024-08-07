@@ -4,12 +4,10 @@ import useConversation from "../../Zustand/userConversation";
 
 export const Messages = () => {
   const { selectedConversation, messages, addMessage } = useConversation();
+  const [loading, setLoading] = useState(false);
 
   const fetchMessage = async () => {
-    if (!selectedConversation?._id) {
-      return;
-    }
-
+    setLoading(true);
     try {
       const res = await fetch(
         `http://localhost:8080/api/v1/messages/get/${selectedConversation._id}`,
@@ -36,26 +34,30 @@ export const Messages = () => {
       }
     } catch (error) {
       console.error("Error fetching messages", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchMessage();
     // eslint-disable-next-line
-  }, [selectedConversation._id]);
+  }, [selectedConversation._id, addMessage]);
 
   if (!Array.isArray(messages)) {
     console.error("Messages state is not an array", messages);
     return null; // or some fallback UI
   }
 
-  useEffect(() => {}, [messages, addMessage]);
-
   return (
     <div className="flex flex-col overflow-auto">
-      {messages.map((message, index) => (
-        <Message key={index} message={message} />
-      ))}
+      {!loading &&
+        messages.length > 0 &&
+        messages.map((message, index) => (
+          <div key={index}>
+            <Message message={message} />
+          </div>
+        ))}
     </div>
   );
 };
