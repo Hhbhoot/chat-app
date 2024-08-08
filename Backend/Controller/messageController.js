@@ -3,7 +3,7 @@ import Conversation from "../Model/conversationModel.js";
 import Message from "../Model/messageModel.js";
 
 export const sendMesaage = asyncHandler(async (req, res, next) => {
-  const senderId = req?.user;
+  const senderId = req?.user._id;
   const { message } = req?.body;
   const receiverId = req?.params.id;
 
@@ -26,14 +26,13 @@ export const sendMesaage = asyncHandler(async (req, res, next) => {
   if (newMessage) {
     conversation.messages.push(newMessage._id);
   }
-
   await Promise.all([conversation.save(), newMessage.save()]);
 
   res.status(201).json({
     status: "success",
     message: "Message sent successfully",
     data: {
-      conversation,
+      newMessage,
     },
   });
 });

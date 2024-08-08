@@ -5,8 +5,7 @@ import Toaster, { toast } from "react-hot-toast";
 
 export const SendMessage = () => {
   const [text, setText] = useState("");
-
-  const { selectedConversation, messages, addMessage } = useConversation();
+  const { selectedConversation, addMessage } = useConversation();
   const { _id: id } = selectedConversation;
 
   const handleSendMessage = async (e) => {
@@ -37,14 +36,14 @@ export const SendMessage = () => {
         return;
       }
 
-      addMessage([...messages, data?.data]);
+      addMessage(data?.data?.newMessage);
 
       // Reset input field after sending message
+      setText("");
     } catch (err) {
       console.error(err);
       toast.error("Failed to send message");
     }
-    setText("");
   };
 
   return (
@@ -60,7 +59,7 @@ export const SendMessage = () => {
           />
 
           <IoIosSend
-            className="w-6 h-6  right-4 bottom-3 absolute"
+            className="w-6 h-6  right-4 bottom-3 absolute cursor-pointer"
             onClick={handleSendMessage}
           />
         </div>

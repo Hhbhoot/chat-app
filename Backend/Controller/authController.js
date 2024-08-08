@@ -15,10 +15,13 @@ export const createUser = asyncHandler(async (req, res, next) => {
   if (existingUser)
     return res.status(400).json({ message: "User already exists" });
 
-  let filepath;
-  if (req?.file) {
-    filepath = req.file.path.replace(/\\/g, "/");
-  }
+  // let filepath;
+  // if (req?.file) {
+  //   filepath = req.file.path.replace(/\\/g, "/");
+  // }
+
+  const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${userName}`;
+  const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${userName}`;
 
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = new User({
@@ -26,12 +29,12 @@ export const createUser = asyncHandler(async (req, res, next) => {
     userName,
     gender,
     password: hashedPassword,
-    profileImage: filepath,
+    profileImage: gender === "male" ? boyProfilePic : girlProfilePic,
   });
 
-   let token ;
+  let token;
   if (user) {
-     token = generateTokenAndSetCookies(user._id, res);
+    token = generateTokenAndSetCookies(user._id, res);
     await user.save();
   } else {
     return res.status(400).json({ message: "Failed to create user" });
@@ -61,16 +64,15 @@ export const loginUser = asyncHandler(async (req, res, next) => {
     return res.status(401).json({ message: "Invalid password" });
   }
 
-   let token =  generateTokenAndSetCookies(user._id, res);
+  let token = generateTokenAndSetCookies(user._id, res);
 
   return res.json({
     status: "success",
     message: "Logged in successfully",
     data: {
       user,
-      token
+      token,
     },
-   
   });
 });
 
@@ -83,16 +85,14 @@ export const logout = async (req, res, next) => {
   }
 };
 
-export const validate = asyncHandler(async(req,res) =>{
-   
-   const user = req?.user
+export const validate = asyncHandler(async (req, res) => {
+  const user = req?.user;
 
-    return res.status(200).json({
-      status: "success",
-      message: "User is authenticated",
-      data  : {
-        user
-      }
-    })
-   
-})
+  return res.status(200).json({
+    status: "success",
+    message: "User is authenticated",
+    data: {
+      user,
+    },
+  });
+});

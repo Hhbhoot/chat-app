@@ -3,7 +3,7 @@ import { Message } from "../Message/Message";
 import useConversation from "../../Zustand/userConversation";
 
 export const Messages = () => {
-  const { selectedConversation, messages, addMessage } = useConversation();
+  const { selectedConversation, messages, setMessages } = useConversation();
   const [loading, setLoading] = useState(false);
 
   const fetchMessage = async () => {
@@ -26,9 +26,9 @@ export const Messages = () => {
         return;
       }
 
-      // Ensure data is an array before adding it
+      // Ensure data is an array before setting it
       if (Array.isArray(data?.data)) {
-        addMessage(data?.data);
+        setMessages(data?.data);
       } else {
         console.error("Fetched data is not an array", data?.data);
       }
@@ -40,9 +40,10 @@ export const Messages = () => {
   };
 
   useEffect(() => {
-    fetchMessage();
-    // eslint-disable-next-line
-  }, [selectedConversation._id, addMessage]);
+    if (selectedConversation?._id) {
+      fetchMessage();
+    }
+  }, [selectedConversation._id]);
 
   if (!Array.isArray(messages)) {
     console.error("Messages state is not an array", messages);

@@ -19,11 +19,7 @@ const Conversations = ({ user, lastIdx }) => {
         key={_id}
         onClick={() => setSelectedConversation(user)}
       >
-        <img
-          src="/images/image 48.png"
-          className="w-8 h-8 rounded-full"
-          alt=""
-        />
+        <img src={user.profileImage} className="w-8 h-8 rounded-full" alt="" />
         <p className="text-white">{name}</p>
       </div>
       {!lastIdx && <div className="border-b border-white"></div>}

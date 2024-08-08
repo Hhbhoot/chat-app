@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Conversations from "../Conversations/Conversations";
+import { useAuthContex } from "../../Contex/AuthContex";
+import useConversation from "../../Zustand/userConversation";
 
 const Conversation = () => {
   const [conversation, setConversation] = useState([]);
+  const { setSelectedConversation, selectedConversation } = useConversation();
 
   const fetchConversation = async () => {
     try {

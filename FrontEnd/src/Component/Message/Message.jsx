@@ -4,8 +4,11 @@ import { useAuthContex } from "../../Contex/AuthContex";
 
 export const Message = ({ message }) => {
   const { authenticatedUSer } = useAuthContex();
+  console.log(authenticatedUSer._id);
+  console.log(message.senderId._id);
   const { selectedConversation } = useConversation();
   const fromMe = message.senderId === authenticatedUSer._id;
+
   const chatClassName = fromMe ? "chat-end" : "chat-start";
   const profilePic = fromMe
     ? authenticatedUSer.profileImage
