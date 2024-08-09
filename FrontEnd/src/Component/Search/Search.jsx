@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { IoSearchSharp } from "react-icons/io5";
+import useConversation from "../../Zustand/userConversation";
 
 const Search = () => {
   const [search, setSearch] = useState("");
   const [conversation, setConversation] = useState([]);
   const [filteredConversation, setFilteredConversation] = useState([]);
+  const { setSelectedConversation } = useConversation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,11 +40,13 @@ const Search = () => {
         setConversation(data.data.users);
 
         // Filter the conversations based on the search term
-        const filtered = data.data.users.filter((user) =>
+        const filtered = data.data.users.find((user) =>
           user.name.toLowerCase().includes(search.toLowerCase())
         );
-
-        setFilteredConversation(filtered);
+        if (filtered) setSelectedConversation(filtered);
+        else {
+          toast.error("No user found .");
+        }
       }
     } catch (err) {
       console.error(err);

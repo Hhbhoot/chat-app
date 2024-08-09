@@ -9,8 +9,15 @@ import { dirname } from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const filepath = path.join(__dirname, "public");
+import helmet from "helmet";
 
-const app = express();
+import { app } from "./Socket/Socket.js";
+
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: false,
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

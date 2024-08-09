@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthContex } from "../../Contex/AuthContex";
 
 const Login = () => {
-  const { setAuth } = useAuthContex();
+  const { setAuth, setAuthenticateUser } = useAuthContex();
 
   const [userName, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
@@ -36,6 +36,8 @@ const Login = () => {
       return;
     }
     setAuth(true);
+    setAuthenticateUser(data?.data?.user);
+
     localStorage.setItem("chatapptcn", data?.data.token);
 
     toast.success("User Logged in successfully.");

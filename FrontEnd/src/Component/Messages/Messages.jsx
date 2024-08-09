@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Message } from "../Message/Message";
 import useConversation from "../../Zustand/userConversation";
+import { useSocketContex } from "../../Contex/SocketContex";
 
 export const Messages = () => {
-  const { selectedConversation, messages, setMessages } = useConversation();
+  const { selectedConversation, messages, setMessages, addMessage } =
+    useConversation();
   const [loading, setLoading] = useState(false);
+  const { socket } = useSocketContex();
+
+  useEffect(() => {
+    socket.on("newMessage", (newMessage) => {
+      setMessages({ ...messages, newMessage });
+    });
+    return () => socket.off("message");
+  }, [socket, messages, addMessage]);
 
   const fetchMessage = async () => {
     setLoading(true);

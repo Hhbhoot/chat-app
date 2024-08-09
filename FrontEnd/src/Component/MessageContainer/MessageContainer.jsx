@@ -27,17 +27,18 @@ export const MessageContainer = () => {
         </>
       ) : (
         <div className="flex items-center w-full justify-center">
-          <NoChatSelected authenticatedUSer={authenticatedUSer} />
+          <NoChatSelected />
         </div>
       )}
     </div>
   );
 };
 
-const NoChatSelected = ({ authenticatedUSer }) => {
+const NoChatSelected = () => {
+  const { authenticatedUSer } = useAuthContex();
   return (
     <div className="flex flex-col gap-2 items-center justify-center text-white w-full">
-      <p>Welcome 👏 {authenticatedUSer.name}</p>
+      <p>Welcome 👏 {authenticatedUSer?.name}</p>
       <p>Select a chat to start Messaging</p>
       <span>
         <PiChatsCircle className="w-10 h-10" />
