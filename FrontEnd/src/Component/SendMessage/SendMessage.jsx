@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { IoIosSend } from "react-icons/io";
 import useConversation from "../../Zustand/userConversation";
 import Toaster, { toast } from "react-hot-toast";
+import Config from "../../Config/Config";
 
 export const SendMessage = () => {
   const [text, setText] = useState("");
-  const { selectedConversation, addMessage } = useConversation();
+  const { selectedConversation, setMessages, messages } = useConversation();
   const { _id: id } = selectedConversation;
 
   const handleSendMessage = async (e) => {
@@ -17,17 +18,14 @@ export const SendMessage = () => {
     }
 
     try {
-      const res = await fetch(
-        `http://localhost:8080/api/v1/messages/send/${id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("chatapptcn")}`,
-          },
-          body: JSON.stringify({ message: text }),
-        }
-      );
+      const res = await fetch(`${Config.apiurl}/api/v1/messages/send/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("chatapptcn")}`,
+        },
+        body: JSON.stringify({ message: text }),
+      });
 
       const data = await res.json();
 
@@ -35,10 +33,11 @@ export const SendMessage = () => {
         console.error(data?.message);
         return;
       }
+      console.log("before ", messages.length);
 
-      addMessage(data?.data?.newMessage);
+      setMessages([...messages, data?.data?.newMessage]);
+      console.log("after", messages.length);
 
-      // Reset input field after sending message
       setText("");
     } catch (err) {
       console.error(err);

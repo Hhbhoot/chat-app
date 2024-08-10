@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { Home, Login, SignUp } from "./Pages";
 import { useAuthContex } from "./Contex/AuthContex";
+import Config from "./Config/Config";
 
 function App() {
   const { isAuth, setAuth, authenticatedUSer, setAuthenticateUser } =
@@ -19,16 +20,13 @@ function App() {
 
       const validateToken = async () => {
         try {
-          const response = await fetch(
-            "http://localhost:8080/api/v1/auth/check",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          const response = await fetch(` ${Config.apiurl}/api/v1/auth/check`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
           const data = await response.json();
 

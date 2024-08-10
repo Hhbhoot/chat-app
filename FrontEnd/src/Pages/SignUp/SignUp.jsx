@@ -5,6 +5,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { FaChevronDown } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContex } from "../../Contex/AuthContex";
+import Config from "../../Config/Config";
 
 const SignUp = () => {
   const { setAuth } = useAuthContex();
@@ -60,7 +61,7 @@ const SignUp = () => {
         return;
       }
 
-      const res = await fetch("http://localhost:8080/api/v1/auth/signup", {
+      const res = await fetch(`${Config.apiurl}/api/v1/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

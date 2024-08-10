@@ -2,17 +2,18 @@ import React, { useEffect, useState } from "react";
 import Conversations from "../Conversations/Conversations";
 import { useAuthContex } from "../../Contex/AuthContex";
 import useConversation from "../../Zustand/userConversation";
+import Config from "../../Config/Config";
 
 const Conversation = () => {
   const [conversation, setConversation] = useState([]);
-  const { setSelectedConversation, selectedConversation } = useConversation();
+  const { authenticatedUSer } = useAuthContex();
 
   const fetchConversation = async () => {
     try {
       let token = localStorage.getItem("chatapptcn");
       if (!token) return; // If no token, return without making a request.
 
-      const res = await fetch("http://localhost:8080/api/v1/users", {
+      const res = await fetch(`${Config.apiurl}/api/v1/users`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -34,7 +35,7 @@ const Conversation = () => {
   useEffect(() => {
     fetchConversation();
     // eslint-disable-next-line
-  }, []);
+  }, [authenticatedUSer]);
 
   return (
     <div className="flex flex-col gap-y-3 mt-6 overflow-auto  h-60   ">

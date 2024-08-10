@@ -5,13 +5,8 @@ import { useSocketContex } from "../../Contex/SocketContex";
 const Conversations = ({ user, lastIdx }) => {
   const { _id, name } = user;
   // console.log(user);
-
   const { onlineUser } = useSocketContex();
-
   const isOnline = onlineUser.includes(_id);
-
-  console.log(isOnline);
-
   const { selectedConversation, setSelectedConversation } = useConversation();
   const isSelected = selectedConversation?._id === user?._id;
 

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { IoSearchSharp } from "react-icons/io5";
 import useConversation from "../../Zustand/userConversation";
+import Config from "../../Config/Config";
 
 const Search = () => {
   const [search, setSearch] = useState("");
@@ -21,7 +22,7 @@ const Search = () => {
       let token = localStorage.getItem("chatapptcn");
       if (!token) return;
 
-      const res = await fetch("http://localhost:8080/api/v1/users", {
+      const res = await fetch(`${Config.apiurl}/api/v1/users`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

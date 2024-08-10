@@ -15,7 +15,7 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (authenticatedUSer) {
-      const socket = io("http://localhost:8080", {
+      const socket = io("http://192.168.1.37:8080", {
         query: { userId: authenticatedUSer._id },
         reconnectionDelay: 1000,
       });

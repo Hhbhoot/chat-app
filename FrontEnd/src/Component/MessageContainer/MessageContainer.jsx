@@ -7,13 +7,14 @@ import useConversation from "../../Zustand/userConversation";
 import { useAuthContex } from "../../Contex/AuthContex";
 
 export const MessageContainer = () => {
-  const { selectedConversation, setSelectedConversation } = useConversation();
+  const { selectedConversation, messages, setSelectedConversation } =
+    useConversation();
   const { authenticatedUSer } = useAuthContex();
 
   useEffect(() => {
     // cleanup function (unmounts)
     return () => setSelectedConversation(null);
-  }, []);
+  }, [authenticatedUSer]);
 
   return (
     <div className="md:min-w-[450px] px-4 border-l self-stretch flex items-center ">
