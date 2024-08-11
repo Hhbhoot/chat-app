@@ -20,7 +20,7 @@ function App() {
 
       const validateToken = async () => {
         try {
-          const response = await fetch(` ${Config.apiurl}/api/v1/auth/check`, {
+          const response = await fetch(`/api/v1/auth/check`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

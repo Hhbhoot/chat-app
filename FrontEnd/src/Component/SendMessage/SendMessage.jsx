@@ -18,7 +18,7 @@ export const SendMessage = () => {
     }
 
     try {
-      const res = await fetch(`${Config.apiurl}/api/v1/messages/send/${id}`, {
+      const res = await fetch(`/api/v1/messages/send/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

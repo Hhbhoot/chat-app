@@ -22,7 +22,7 @@ const Search = () => {
       let token = localStorage.getItem("chatapptcn");
       if (!token) return;
 
-      const res = await fetch(`${Config.apiurl}/api/v1/users`, {
+      const res = await fetch(`/api/v1/users`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

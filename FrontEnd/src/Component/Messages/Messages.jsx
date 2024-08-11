@@ -3,6 +3,8 @@ import { Message } from "../Message/Message";
 import useConversation from "../../Zustand/userConversation";
 import { useSocketContex } from "../../Contex/SocketContex";
 import Config from "../../Config/Config";
+import MessageSkeleton from "../../Skeleton/MessageSkeleton";
+import NotificationSound from "../../sounds/notification.mp3";
 
 export const Messages = () => {
   const { selectedConversation, messages, setMessages } = useConversation();
@@ -13,7 +15,7 @@ export const Messages = () => {
     setLoading(true);
     try {
       const res = await fetch(
-        `${Config.apiurl}/api/v1/messages/get/${selectedConversation._id}`,
+        `/api/v1/messages/get/${selectedConversation._id}`,
         {
           method: "GET",
           headers: {
@@ -43,7 +45,7 @@ export const Messages = () => {
     if (selectedConversation?._id) {
       fetchMessage();
     }
-  }, [selectedConversation._id, setMessages]);
+  }, [selectedConversation._id]);
 
   if (!Array.isArray(messages)) {
     console.error("Messages state is not an array", messages);
@@ -51,17 +53,13 @@ export const Messages = () => {
   }
 
   useEffect(() => {
-    socket.on("newMessage", (newMessage) => {
-      console.log("newMessage", messages.length);
-
+    socket?.on("newMessage", (newMessage) => {
+      const audio = new Audio(NotificationSound);
+      audio.play();
       setMessages([...messages, newMessage]);
-
-      setTimeout(() => {
-        console.log("all message length", messages.length);
-      }, 5000);
     });
     return () => socket.off("newMessage");
-  }, [socket, setMessages]);
+  }, [socket, setMessages, messages]);
 
   const lastMessageRef = useRef();
 
@@ -82,6 +80,13 @@ export const Messages = () => {
             <Message message={message} />
           </div>
         ))}
+
+      {loading && [...Array(3)].map((_, idx) => <MessageSkeleton />)}
+      {!loading && messages.length === 0 && (
+        <div className="flex items-center justify-center text-white">
+          Send a message to start conversation.
+        </div>
+      )}
     </div>
   );
 };

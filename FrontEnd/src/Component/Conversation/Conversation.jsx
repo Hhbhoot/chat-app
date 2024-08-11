@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Conversations from "../Conversations/Conversations";
 import { useAuthContex } from "../../Contex/AuthContex";
-import useConversation from "../../Zustand/userConversation";
-import Config from "../../Config/Config";
 
 const Conversation = () => {
   const [conversation, setConversation] = useState([]);
@@ -13,7 +11,7 @@ const Conversation = () => {
       let token = localStorage.getItem("chatapptcn");
       if (!token) return; // If no token, return without making a request.
 
-      const res = await fetch(`${Config.apiurl}/api/v1/users`, {
+      const res = await fetch(`/api/v1/users`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

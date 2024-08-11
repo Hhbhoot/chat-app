@@ -22,7 +22,7 @@ const Login = () => {
       return;
     }
 
-    const res = await fetch(`${Config.apiurl}/api/v1/auth/login`, {
+    const res = await fetch(`/api/v1/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

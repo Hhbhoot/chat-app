@@ -5,9 +5,10 @@ import path from "path";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import { fileURLToPath } from "url";
-import { dirname } from "path";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// import { dirname } from "path";
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = dirname(__filename);
+const __dirname = path.resolve();
 const filepath = path.join(__dirname, "public");
 import helmet from "helmet";
 
@@ -29,9 +30,14 @@ import authRouter from "./Routes/authRoutes.js";
 import messageRouter from "./Routes/messageRoutes.js";
 import userRouter from "./Routes/userRoutes.js";
 
+app.use(express.static(path.join(__dirname, "FrontEnd/dist")));
 app.use("/public", express.static(filepath));
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/messages", messageRouter);
 app.use("/api/v1/users", userRouter);
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "FrontEnd", "dist", "index.html"));
+});
 
 export default app;

@@ -53,7 +53,7 @@ export const getMessages = asyncHandler(async (req, res, next) => {
   }).populate("messages");
 
   if (!conversation) {
-    return res.status(200).json([]);
+    return res.status(200).json({ status: "success", data: [] });
   }
   res.status(200).json({
     status: "success",
